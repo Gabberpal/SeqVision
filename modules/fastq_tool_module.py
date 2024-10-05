@@ -26,11 +26,11 @@ def filter_reads_by_gc(fastq_data: dict, gc_bounds=(0, 100)):
     fastq_dict : dict
         Словарь, где ключами являются имена ридов, а значениями — кортежи,
         содержащие последовательность и качество.
-        Пример: {'@SRX079801': ('ACAGCAACATAAACATGATGGGATGGCGTAAGCCCCCGAGATATCAGTTTACCCAGGATAAGAGATTAAATTATGAGCAACATTATTAA', 'FGGGFGGGFGGGFGDFGCEBB@CCDFDDFFFFBFFGFGEFDFFFF;D@DD>C@DDGGGDFGDGG?GFGFEGFGGEF@FDGGGFGFBGGD')}
 
     gc_bounds : tuple or int or float, optional
         Интервал GC состава (в процентах) для фильтрации.
-        Если передано одно число, оно считается верхней границей, а нижняя граница устанавливается в 0.
+        Если передано одно число, оно считается верхней границей,
+        а нижняя граница устанавливается в 0.
         По умолчанию равен (0, 100), т. е. все риды сохраняются.
         Примеры:
         - (20, 80) - сохраняем только риды с GC составом от 20 до 80%.
@@ -39,7 +39,8 @@ def filter_reads_by_gc(fastq_data: dict, gc_bounds=(0, 100)):
     Возвращает:
     --------
     dict
-        Отфильтрованный словарь ридов, удовлетворяющих заданным условиям GC состава.
+        Отфильтрованный словарь ридов,
+        удовлетворяющих заданным условиям GC состава.
     """
     if isinstance(gc_bounds, (int, float)):
         gc_bounds = (0, gc_bounds)
@@ -79,10 +80,10 @@ def filter_length_bounds(
     fastq_dict : dict
         Словарь, где ключами являются имена ридов, а значениями — кортежи,
         содержащие последовательность и качество.
-        Пример: {'@SRX079801': ('ACAGCAACATAAACATGATGGGATGGCGTAAGCCCCCGAGATATCAGTTTACCCAGGATAAGAGATTAAATTATGAGCAACATTATTAA', 'FGGGFGGGFGGGFGDFGCEBB@CCDFDDFFFFBFFGFGEFDFFFF;D@DD>C@DDGGGDFGDGG?GFGFEGFGGEF@FDGGGFGFBGGD')}
     gc_bounds : tuple or int, optional
         Интервал длины рида (в количестве нуклеотидов) для фильтрации.
-        Если передано одно число, оно считается верхней границей, а нижняя граница устанавливается в 0.
+        Если передано одно число, оно считается верхней границей,
+        а нижняя граница устанавливается в 0.
         По умолчанию равен (0, 2**32), т. е. все риды сохраняются.
         Примеры:
         - (0, 2*32) - сохраняем только риды длиной 0 до 2*32 нуклеотидов.
@@ -98,7 +99,10 @@ def filter_length_bounds(
     return filtered_length_bounds
 
 
-def filter_quality_threshold(fastq_data: dict, trashhold: tuple[int, float]=0):
+def filter_quality_threshold(
+        fastq_data: dict,
+        trashhold: tuple[int, float] = 0
+        ):
     """
     """
     filtered_quality_threshold = fastq_data.copy()
