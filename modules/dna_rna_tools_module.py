@@ -42,21 +42,21 @@ TranscribeDictRna = {
 }
 
 
-def is_rna(seq):
+def is_rna(seq: str):
     if set(seq.upper()) <= set_rna:
         return True
     else:
         return False
 
 
-def is_dna(seq):
+def is_dna(seq: str):
     if set(seq.upper()) <= set_dna:
         return True
     else:
         return False
 
 
-def complement(seq):
+def complement(seq: str):
     complement_seq = ""
     if is_dna(seq):
         complement_seq = "".join([ComplementDictDna[i] for i in seq])
@@ -66,11 +66,11 @@ def complement(seq):
     return complement_seq
 
 
-def reverse(seq):
+def reverse(seq: str):
     return seq[::-1]
 
 
-def transcribe(seq):
+def transcribe(seq: str):
     transcribe_seq = ""
     if is_dna(seq):
         transcribe_seq = "".join([TranscribeDictDna[i] for i in seq])
@@ -79,13 +79,13 @@ def transcribe(seq):
     return transcribe_seq
 
 
-def reverse_complement(seq):
+def reverse_complement(seq: str):
     return reverse(complement(seq))
 
 
 # Функция, которая возвращает последовательность, если она является палиндромом.
 # Удобно, если из большого числа последовательностей нужно отобрать только палиндромы
-def which_palindrome(seq):
+def which_palindrome(seq: str):
     if len(seq) % 2 == 0:
         if (
             seq[: int(len(seq) / 2)].lower()

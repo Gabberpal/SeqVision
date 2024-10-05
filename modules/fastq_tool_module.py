@@ -98,7 +98,7 @@ def filter_length_bounds(
     return filtered_length_bounds
 
 
-def filter_quality_threshold(fastq_data: dict, trashhold=0):
+def filter_quality_threshold(fastq_data: dict, trashhold: tuple[int, float]=0):
     """
     """
     filtered_quality_threshold = fastq_data.copy()
