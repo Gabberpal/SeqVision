@@ -77,10 +77,6 @@ def reverse_complement(seq: str):
     return reverse(complement(seq))
 
 
-# Функция, которая возвращает последовательность,
-# если она является палиндромом.
-# Удобно, если из большого числа последовательностей нужно
-# отобрать только палиндромы
 def which_palindrome(seq: str):
     if len(seq) % 2 == 0:
         if (

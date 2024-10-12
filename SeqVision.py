@@ -32,34 +32,36 @@ def filter_fastq(
     quality_threshold: Union[int, float] = 0,
 ) -> Dict[str, Tuple[str, str]]:
     """
-    Фильтрует риды по GC составу,
-    длине последовательности и порогу качества.
+    Filters reads by GC content, sequence length, and quality threshold.
 
-    Параметры:
+    Parameters:
     ----------
     fastq_data : Dict[str, Tuple[str, str]]
-        Словарь, где ключами являются имена ридов,
-        а значениями — кортежи,
-        содержащие последовательность и качество.
-    gc_bounds : Union[Tuple[int, int], int, float], optional
-        Интервал GC состава (в процентах) для фильтрации.
-        Если передано одно число, оно считается верхней границей,
-        а нижняя граница устанавливается в 0.
-        По умолчанию равен (0, 100), т. е. все риды сохраняются.
-    length_bounds : Union[Tuple[int, int], int], optional
-        Интервал длины последовательности для фильтрации.
-        Если передано одно число, оно считается верхней границей,
-        а нижняя граница устанавливается в 0.
-        По умолчанию равен (0, 2**32), т. е. все риды сохраняются.
-    quality_threshold : Union[int, float], optional
-        Порог среднего качества для фильтрации.
-        По умолчанию равен 0, т. е. все риды сохраняются.
+        Dictionary where keys are read names,
+        and values are tuples
+        containing the sequence and quality.
 
-    Возвращает:
+    gc_bounds : Union[Tuple[int, int], int, float], optional
+        GC content interval (in percent) for filtering.
+        If a single number is provided, it is considered the upper bound,
+        and the lower bound is set to 0.
+        Defaults to (0, 100), i.e., all reads are preserved.
+
+    length_bounds : Union[Tuple[int, int], int], optional
+        Sequence length interval for filtering.
+        If a single number is provided, it is considered the upper bound,
+        and the lower bound is set to 0.
+        Defaults to (0, 2**32), i.e., all reads are preserved.
+
+    quality_threshold : Union[int, float], optional
+        Average quality threshold for filtering.
+        Defaults to 0, i.e., all reads are preserved.
+
+    Returns:
     --------
     Dict[str, Tuple[str, str]]
-        Отфильтрованный словарь ридов,
-        удовлетворяющих заданным условиям GC состава, длины и качества.
+        Filtered dictionary of reads
+        that meet the specified conditions for GC content, length, and quality.
     """
     if isinstance(gc_bounds, (int, float)):
         gc_bounds = (0, gc_bounds)
@@ -80,33 +82,32 @@ def run_dna_rna_tools(
         *args: Union[str, Callable[[str], str]]
         ) -> Union[str, List[str]]:
     """
-    Выполняет указанную функцию над последовательностями ДНК или РНК.
+    Performs the specified function on DNA or RNA sequences.
 
-    Параметры:
+    Parameters:
     ----------
     *args : Union[str, Callable[[str], str]]
-        Переменное количество аргументов,
-        где последний аргумент - это имя функции,
-        а все предыдущие аргументы - это последовательности ДНК или РНК.
+        Variable number of arguments,
+        where the last argument is the function name,
+        and all preceding arguments are DNA or RNA sequences.
 
-    Возвращает:
+    Returns:
     --------
     Union[str, List[str]]
-        Результат выполнения функции над последовательностями.
-        Если передана одна последовательность,
-        возвращается строка. Если передано несколько последовательностей,
-        возвращается список строк.
+        The result of the function applied to the sequences.
+        If a single sequence is provided, a string is returned.
+        If multiple sequences are provided, a list of strings is returned.
 
-    Исключения:
+    Exceptions:
     -----------
     ValueError
-        Если передано менее двух аргументов или если последний
-        аргумент не является допустимым именем функции.
+        If fewer than two arguments are provided or if the last
+        argument is not a valid function name.
     ValueError
-        Если последовательности не являются ДНК или РНК.
+        If the sequences are not DNA or RNA.
     """
     if len(args) < 2:
-        raise ValueError("Функция принимает минимум 2 аргумента")
+        raise ValueError("The function requires at least 2 arguments.")
     function = args[-1]
     seqs = args[:-1]
     if function not in [
@@ -116,12 +117,12 @@ def run_dna_rna_tools(
         "reverse",
         "which_palindrome",
     ]:
-        raise ValueError("Такой функции нет, выберите другую")
+        raise ValueError("Such a function does not exist, please choose another one.")
     returned_seqs = []
     for seq in seqs:
         if not is_dna(seq) and not is_rna(seq):
             raise ValueError(
-                "Функция работает только с ДНК и РНК последовательностями"
+                "The function only works with DNA and RNA sequences."
                 )
         returned_seqss = functions[function](seq)
         returned_seqs.append(returned_seqss)
