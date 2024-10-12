@@ -43,12 +43,12 @@ TranscribeDictRna = {
 
 
 def is_rna(seq: str):
-    return set(seq.upper()) <= set_rna:
+    return set(seq.upper()) <= set_rna
 
 
 def is_dna(seq: str):
     return set(seq.upper()) <= set_dna
-     
+
 
 def complement(seq: str):
     complement_seq = ""
@@ -85,7 +85,7 @@ def which_palindrome(seq: str):
     if len(seq) % 2 == 0:
         if (
             seq[: int(len(seq) / 2)].lower()
-            == seq[-1:int(len(seq) / 2 - 1):-1].lower()
+            == seq[-1 : int(len(seq) / 2 - 1) : -1].lower()
         ):
             return seq
 

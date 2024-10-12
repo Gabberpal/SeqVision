@@ -103,10 +103,8 @@ def filter_quality_threshold(fastq_data: dict, trashhold: tuple[int, float] = 0)
     """ """
     filtered_quality_threshold = fastq_data.copy()
     for id, (seq, quality) in fastq_data.items():
-        cnt = 0
-        for chr in quality:
-            cnt += ord(chr) - 33
-        filtered_quality = cnt / len(quality)
+        filtered_quality = 0
+        filtered_quality = sum([ord(chr) - 33 for chr in quality]) / len(quality)
         if not (filtered_quality >= trashhold):
             del filtered_quality_threshold[id]
     return filtered_quality_threshold
