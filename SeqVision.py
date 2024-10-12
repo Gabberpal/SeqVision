@@ -3,17 +3,10 @@ import typing
 from modules.fastq_tool_module import (
     calculate_gc_content,
     filter_reads_by_gc,
-    calculate_length_bounds,
     filter_length_bounds,
     filter_quality_threshold,
 )
 from modules.dna_rna_tools_module import (
-    set_rna,
-    set_dna,
-    ComplementDictDna,
-    ComplementDictRna,
-    TranscribeDictDna,
-    TranscribeDictRna,
     is_rna,
     is_dna,
     complement,
@@ -21,7 +14,6 @@ from modules.dna_rna_tools_module import (
     transcribe,
     reverse_complement,
     which_palindrome,
-    functions,
 )
 
 
