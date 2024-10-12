@@ -1,34 +1,33 @@
 # SeqVision 
 
-**SeqVision** - это инструмент для обработки и анализа нуклеотидных последовательностей, таких как ДНК и РНК. Он предоставляет функции для фильтрации, трансформации и анализа последовательностей.
+**SeqVision** - is a tool for processing and analyzing nucleotide sequences such as DNA and RNA. It provides functions for filtering, transforming, and analyzing sequences.
 
-## Оглавление 
+## Table of Contents 
 
-- [Функциональность](#функциональность)
-- [Установка](#установка)
-- [Использование](#использование)
-- [Примеры](#примеры)
+- [Functionality](#Functionality)
+- [Installation](#Installation)
+- [Usage](#Usage)
+- [Examples](#Examples)
 
-## Функциональность 
+## Functionality 
 
-- **Фильтрация последовательностей**: Фильтрация последовательностей по GC-составу, длине и качеству.
-- **Трансформация последовательностей**: Транскрипция, комплементарность, обратная комплементарность, реверс и отбор палиндромных последовательностей.
-- **Анализ последовательностей**: Вычисление статистики по последовательностям, такой как GC-состав и длина.
+- **Sequence Filtering**: Filter sequences by GC content, length, and quality.
+- **Sequence Transformation**: Transcription, complementarity, reverse complementarity, reverse, and palindrome selection.
+- **Sequence Analysis**: Calculate statistics on sequences such as GC content and length.
 
-## Установка 
+## Installation 
 
-Клонируйте репозиторий:
+Clone the repository:
 
    ```bash
-   git clone https://github.com/Gabberpal/SeqVision
-   cd SeqVision
+   git clone https://github.com/Gabberpal/SeqVision && cd SeqVision
    ```
 
-## Использование 
+## Usage 
 
-### Фильтрация последовательностей
+### Sequence Filtering
 
-Для фильтрации последовательностей по GC-составу, длине и качеству, используйте функцию `filter_fastq`. Пример:
+To filter sequences by GC content, length, and quality, use the `filter_fastq` function. Example:
 
 ```python
 from seqvision import filter_fastq
@@ -42,7 +41,7 @@ fastq_data = {
 filtered_fastq = filter_fastq(fastq_data, gc_bounds=(20, 80), length_bounds=(50, 75), quality_threshold=20)
 print(filtered_fastq)
 ```
-### Трансформация последовательностей 
+### Sequence Transformation 
 
 ```python
 sequences = ["ACGT", "UGCA"]
@@ -50,12 +49,12 @@ transformed_sequences = run_dna_rna_tools(sequences, "function_name")
 print(transformed_sequences)
 ```
 
-#### Функции для трансформации последовательностей 
+#### Functions for Sequence Transformation 
 
-- `transcribe`: возвращает транскрибированные последовательности.
-- `complement`: возвращает комплементарные последовательности.
-- `reverse`: возвращает обратные последовательности.
-- `reverse_complement`: возвращает обратно-комплементарные последовательности.
-- `which_palindrome`: возврощает только палиндромные последовательности.
+- `transcribe`: Returns transcribed sequences.
+- `complement`: Returns complementary sequences.
+- `reverse`: Returns reverse sequences.
+- `reverse_complement`: Returns reverse-complementary sequences.
+- `which_palindrome`: Returns only palindromic sequences.
 
 
