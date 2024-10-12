@@ -43,18 +43,12 @@ TranscribeDictRna = {
 
 
 def is_rna(seq: str):
-    if set(seq.upper()) <= set_rna:
-        return True
-    else:
-        return False
+    return set(seq.upper()) <= set_rna:
 
 
 def is_dna(seq: str):
-    if set(seq.upper()) <= set_dna:
-        return True
-    else:
-        return False
-
+    return set(seq.upper()) <= set_dna
+     
 
 def complement(seq: str):
     complement_seq = ""
