@@ -1,5 +1,4 @@
 from typing import List, Union, Callable, Dict, Tuple
-import typing
 from modules.fastq_tool_module import (
     calculate_gc_content,
     filter_reads_by_gc,
