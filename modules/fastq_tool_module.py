@@ -77,7 +77,7 @@ def filter_length_bounds(
         length_bounds = (0, length_bounds)
     filtered_length_bounds = fastq_data.copy()
     for id, (seq, quality) in fastq_data.items():
-        length = length(seq)
+        length = len(seq)
         if not (length_bounds[0] <= length <= length_bounds[1]):
             del filtered_length_bounds[id]
     return filtered_length_bounds
