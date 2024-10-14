@@ -25,14 +25,16 @@ def filter_fastq(
     quality_threshold: Union[int, float] = 0,
 ) -> Dict[str, Tuple[str, str]]:
     """
-    Filters reads by GC content, sequence length, and quality threshold.
+    Filters FASTQ reads by GC content, sequence length, and quality threshold.
 
     Parameters:
     ----------
-    fastq_data : Dict[str, Tuple[str, str]]
-        Dictionary where keys are read names,
-        and values are tuples
-        containing the sequence and quality.
+    input_fastq : str
+        Name of the FASTQ file located in the "data: folder.
+
+    output_fastq : str
+        Name of the output FASTQ file 
+        that will be located in the "filtered" folder.
 
     gc_bounds : Union[Tuple[int, int], int, float], optional
         GC content interval (in percent) for filtering.
@@ -53,8 +55,8 @@ def filter_fastq(
     Returns:
     --------
     Dict[str, Tuple[str, str]]
-        Filtered dictionary of reads
-        that meet the specified conditions for GC content, length, and quality.
+        Filtered dictionary of reads that meet the specified conditions
+        for GC content, length, and quality.
     """
     if isinstance(gc_bounds, (int, float)):
         gc_bounds = (0, gc_bounds)
@@ -71,7 +73,8 @@ def filter_fastq(
                 seq_line = fastq_file.readline().strip()
                 id2_line = fastq_file.readline().strip()
                 quality_line = fastq_file.readline().strip()
-                if not (id_line.startswith("@SR") and id2_line.startswith("+SR")):
+                if not (id_line.startswith("@SR") 
+                        and id2_line.startswith("+SR")):
                     raise TypeError("The fuction works only with .fastq files")
                 if (
                     filter_reads_by_gc(seq_line, gc_bounds),
