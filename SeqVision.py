@@ -1,4 +1,5 @@
 from typing import List, Union, Callable, Dict, Tuple
+import os
 from modules.fastq_tool_module import (
     calculate_gc_content,
     filter_reads_by_gc,
@@ -17,20 +18,23 @@ from modules.dna_rna_tools_module import (
 
 
 def filter_fastq(
-    fastq_data: Dict[str, Tuple[str, str]],
+    input_fastq: str,
+    output_fastq: str,
     gc_bounds: Union[Tuple[int, int], int, float] = (0, 100),
     length_bounds: Union[Tuple[int, int], int] = (0, 2**32),
     quality_threshold: Union[int, float] = 0,
 ) -> Dict[str, Tuple[str, str]]:
     """
-    Filters reads by GC content, sequence length, and quality threshold.
+    Filters FASTQ reads by GC content, sequence length, and quality threshold.
 
     Parameters:
     ----------
-    fastq_data : Dict[str, Tuple[str, str]]
-        Dictionary where keys are read names,
-        and values are tuples
-        containing the sequence and quality.
+    input_fastq : str
+        Name of the FASTQ file located in the "data: folder.
+
+    output_fastq : str
+        Name of the output FASTQ file 
+        that will be located in the "filtered" folder.
 
     gc_bounds : Union[Tuple[int, int], int, float], optional
         GC content interval (in percent) for filtering.
@@ -51,22 +55,36 @@ def filter_fastq(
     Returns:
     --------
     Dict[str, Tuple[str, str]]
-        Filtered dictionary of reads
-        that meet the specified conditions for GC content, length, and quality.
+        Filtered dictionary of reads that meet the specified conditions
+        for GC content, length, and quality.
     """
     if isinstance(gc_bounds, (int, float)):
         gc_bounds = (0, gc_bounds)
     if isinstance(length_bounds, int):
         length_bounds = (0, length_bounds)
-    filtered_fastq_data = fastq_data.copy()
-    filtered_fastq_data = filter_reads_by_gc(filtered_fastq_data, gc_bounds)
-    filtered_fastq_data = filter_length_bounds(
-        filtered_fastq_data, length_bounds
-        )
-    filtered_fastq_data = filter_quality_threshold(
-        filtered_fastq_data, quality_threshold
-    )
-    return filtered_fastq_data
+    file_path = os.path.join("data", input_fastq)
+    output_file_path = os.path.join("filtered", output_fastq)
+    with open(file_path, "r") as fastq_file:
+        with open(output_file_path, "a") as output_file:
+            while True:
+                id_line = fastq_file.readline().strip()
+                if not id_line:
+                    break
+                seq_line = fastq_file.readline().strip()
+                id2_line = fastq_file.readline().strip()
+                quality_line = fastq_file.readline().strip()
+                if not (id_line.startswith("@SR") 
+                        and id2_line.startswith("+SR")):
+                    raise TypeError("The fuction works only with .fastq files")
+                if (
+                    filter_reads_by_gc(seq_line, gc_bounds) and
+                    filter_length_bounds(seq_line, length_bounds) and
+                    filter_quality_threshold(quality_line, quality_threshold)
+                ):
+                    output_file.write(id_line + "\n")
+                    output_file.write(seq_line + "\n")
+                    output_file.write(id2_line + "\n")
+                    output_file.write(quality_line + "\n")
 
 
 def run_dna_rna_tools(
@@ -122,3 +140,4 @@ def run_dna_rna_tools(
         return returned_seqs
     else:
         return returned_seqs[0]
+    

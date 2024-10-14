@@ -17,7 +17,7 @@ def calculate_gc_content(seq: str):
     return gc_content
 
 
-def filter_reads_by_gc(fastq_data: dict, gc_bounds=(0, 100)):
+def filter_reads_by_gc(seq_line: str, gc_bounds=(0, 100)) -> bool:
     """
     Filters reads by GC content.
 
@@ -44,16 +44,13 @@ def filter_reads_by_gc(fastq_data: dict, gc_bounds=(0, 100)):
     """
     if isinstance(gc_bounds, (int, float)):
         gc_bounds = (0, gc_bounds)
-    filtered_fastq = fastq_data.copy()
-    for id, (seq, quality) in fastq_data.items():
-        gc_content_count = calculate_gc_content(seq)
-        if not (gc_bounds[0] <= gc_content_count <= gc_bounds[1]):
-            del filtered_fastq[id]
-    return filtered_fastq
+    gc_content_count = calculate_gc_content(seq_line)
+    if gc_bounds[0] <= gc_content_count <= gc_bounds[1]:
+        return True
 
 
 def filter_length_bounds(
-    fastq_data: dict, length_bounds: tuple[tuple, int] = (0, 2**32)
+    seq_line: str, length_bounds: tuple[tuple, int] = (0, 2**32)
 ):
     """
     Filters reads by length.
@@ -75,20 +72,13 @@ def filter_length_bounds(
     """
     if isinstance(length_bounds, int):
         length_bounds = (0, length_bounds)
-    filtered_length_bounds = fastq_data.copy()
-    for id, (seq, quality) in fastq_data.items():
-        length = len(seq)
-        if not (length_bounds[0] <= length <= length_bounds[1]):
-            del filtered_length_bounds[id]
-    return filtered_length_bounds
+    length = len(seq_line)
+    if (length_bounds[0] <= length <= length_bounds[1]):
+        return True
 
 
-def filter_quality_threshold(fastq_data: dict, trashhold: tuple[int, float] = 0):
+def filter_quality_threshold(quality_line: str, trashhold: tuple[int, float] = 0):
     """ """
-    filtered_quality_threshold = fastq_data.copy()
-    for id, (seq, quality) in fastq_data.items():
-        filtered_quality = 0
-        filtered_quality = sum([ord(chr) - 33 for chr in quality]) / len(quality)
-        if not (filtered_quality >= trashhold):
-            del filtered_quality_threshold[id]
-    return filtered_quality_threshold
+    filtered_quality = sum([ord(chr) - 33 for chr in quality_line]) / len(quality_line)
+    if filtered_quality >= trashhold:
+        return True
