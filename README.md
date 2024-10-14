@@ -83,3 +83,7 @@ import bio_files_processor
 
 parse_blast_output("example_blast_results.txt", "blast_output.txt")
 ```
+
+### data folder 
+
+In data folder you can find some exaple datas. You can try it on functions from this repo and understand how this functions works! 
