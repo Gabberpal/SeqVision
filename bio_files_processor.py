@@ -44,4 +44,46 @@ def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str):
                     output_fasta_file.write(line)
                     prev = line
 
+def parse_blast_output(input_blast: str, output_blast: str):
+    """
+    Parses a BLAST output file to extract and sort protein descriptions.
+
+    Parameters:
+    -----------
+    input_blast : str
+        Path to the input BLAST output file relative to the "data" directory.
+
+    output_blast : str
+        Path to the output file where the parsed and sorted protein descriptions will be written.
+
+    Returns:
+    --------
+    None
+        The function writes the parsed and sorted protein descriptions to the specified output file.
+
+    Notes:
+    ------
+    - The function reads the input BLAST output file line by line.
+    - It extracts protein descriptions starting from the line containing "Description".
+    - The extracted descriptions are sorted alphabetically.
+    - The sorted descriptions are written to the output file with each description followed by '...' and a newline.
+    """
+    blast_path = os.path.join("data", input_blast)
+    with open(blast_path, "r") as blast_file:
+        with open(output_blast, "a") as blast_output:
+            flag = False
+            result = []
+            while True:
+                line = blast_file.readline()
+                if "Description" in line:
+                    flag = True 
+                    continue
+                if flag:
+                    if line.startswith('\n'):
+                        break
+                    result.append(line.split('...')[0])
+            result.sort()
+            for prot in result:
+                blast_output.write(prot + '...' + '\n')
+                 
 
