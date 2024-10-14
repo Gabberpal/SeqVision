@@ -77,8 +77,8 @@ def filter_fastq(
                         and id2_line.startswith("+SR")):
                     raise TypeError("The fuction works only with .fastq files")
                 if (
-                    filter_reads_by_gc(seq_line, gc_bounds),
-                    filter_length_bounds(seq_line, length_bounds),
+                    filter_reads_by_gc(seq_line, gc_bounds) and
+                    filter_length_bounds(seq_line, length_bounds) and
                     filter_quality_threshold(quality_line, quality_threshold)
                 ):
                     output_file.write(id_line + "\n")
@@ -140,4 +140,4 @@ def run_dna_rna_tools(
         return returned_seqs
     else:
         return returned_seqs[0]
-
+    
