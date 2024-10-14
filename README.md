@@ -1,6 +1,6 @@
 # SeqVision 
 
-**SeqVision** - is a tool for processing and analyzing nucleotide sequences such as DNA and RNA. It provides functions for filtering, transforming, and analyzing sequences.
+**SeqVision** - is a tool for processing and analyzing nucleotide sequences such as DNA and RNA. It provides functions for filtering, transforming, and analyzing FASTQ, FASTA and BLAST sequences.
 
 ## Table of Contents 
 
@@ -14,6 +14,8 @@
 - **Sequence Filtering**: Filter sequences by GC content, length, and quality.
 - **Sequence Transformation**: Transcription, complementarity, reverse complementarity, reverse, and palindrome selection.
 - **Sequence Analysis**: Calculate statistics on sequences such as GC content and length.
+- **Convert multiline fasta data to oneline**: convert fasta reads to oneline.
+- **Extract and sort protein description after BLAST**: Parses a BLAST output file to extract and sort protein descriptions.
 
 ## Installation 
 
@@ -25,21 +27,24 @@ Clone the repository:
 
 ## Usage 
 
-### Sequence Filtering
+### FASTQ sequence Filtering
 
-To filter sequences by GC content, length, and quality, use the `filter_fastq` function. Example:
+To filter FASTQ sequences by GC content, length, and quality, use the `filter_fastq` function.
+
+**Parameters**:
+
+- input_fastq (str): Name of the input FASTQ file located in the "data" folder. 
+- output_fastq (str): Name of the output FASTQ file that will be located in the "filtered" folder.
+- gc_bounds (Union[Tuple[int, int], int, float], optional): GC content interval (in percent) for filtering.
+- length_bounds (Union[Tuple[int, int], int], optional): Sequence length interval for filtering.
+- quality_threshold (Union[int, float], optional): Average quality threshold for filtering.
+
+Example:
 
 ```python
-from seqvision import filter_fastq
+from SeqVision import filter_fastq
 
-fastq_data = {
-    '@SRX079801': ('ACAGCAACATAAACATGATGGGATGGCGTAAGCCCCCGAGATATCAGTTTACCCAGGATAAGAGATTAAATTATGAGCAACATTATTAA', 'FGGGFGGGFGGGFGDFGCEBB@CCDFDDFFFFBFFGFGEFDFFFF;D@DD>C@DDGGGDFGDGG?GFGFEGFGGEF@FDGGGFGFBGGD'),
-    '@SRX079802': ('ATTAGCGAGGAGGAGTGCTGAGAAGATGTCGCCTACGCCGTTGAAATTCCCTTCAATCAGGGGGTACTGGAGGATACGAGTTTGTGTG', 'BFFFFFFFB@B@A<@D>BDDACDDDEBEDEFFFBFFFEFFDFFF=CC@DDFD8FFFFFFF8/+.2,@7<<:?B/:<><-><@.A*C>D'),
-    '@SRX079803': ('GAACGACAGCAGCTCCTGCATAACCGCGTCCTTCTTCTTTAGCGTTGTGCAAAGCATGTTTTGTATTACGGGCATCTCGAGCGAATC', 'DFFFEGDGGGGFGGEDCCDCEFFFFCCCCCB>CEBFGFBGGG?DE=:6@=>A<A>D?D8DCEE:>EEABE5D@5:DDCA;EEE-DCD')
-}
-
-filtered_fastq = filter_fastq(fastq_data, gc_bounds=(20, 80), length_bounds=(50, 75), quality_threshold=20)
-print(filtered_fastq)
+filtered_fastq = filter_fastq("example_fastq.fastq", "output_fastq.fastq", gc_bounds=(20, 80), length_bounds=(50, 75), quality_threshold=20)
 ```
 ### Sequence Transformation 
 
@@ -57,4 +62,24 @@ print(transformed_sequences)
 - `reverse_complement`: Returns reverse-complementary sequences.
 - `which_palindrome`: Returns only palindromic sequences.
 
+### Convert multiline FASTA data to oneline
 
+To convert multiline FASTA data to oneline use `convert_multiline_fasta_to_oneline()` function.
+Ecample:
+
+```Python
+import bio_files_processor 
+
+convert_multiline_fasta_to_oneline('example_miltiline_fasta.fasta', 'output_fasta.fasta')
+```
+
+### Extract and sort protein description after BLAST
+
+To extract and sort protein description after BLAST use `parse_blast_output()` function.
+Example:
+
+```Python
+import bio_files_processor 
+
+parse_blast_output("example_blast_results.txt", "blast_output.txt")
+```

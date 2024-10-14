@@ -25,8 +25,9 @@ def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str):
     - The function handles the case where the input file contains sequences that span multiple lines.
     """
     fasta_path = os.path.join("data", input_fasta)
+    output_fasta_path = os.path.join("filtered", output_fasta)
     with open(fasta_path, "r") as fasta_file:
-        with open(output_fasta, "a") as output_fasta_file:
+        with open(output_fasta_path, "a") as output_fasta_file:
             prev = "0"
             while True:
                 line = fasta_file.readline().strip()
@@ -69,8 +70,9 @@ def parse_blast_output(input_blast: str, output_blast: str):
     - The sorted descriptions are written to the output file with each description followed by '...' and a newline.
     """
     blast_path = os.path.join("data", input_blast)
+    output_blast_path = os.path.join("filtered", output_blast)
     with open(blast_path, "r") as blast_file:
-        with open(output_blast, "a") as blast_output:
+        with open(output_blast_path, "a") as blast_output:
             flag = False
             result = []
             while True:
@@ -85,5 +87,7 @@ def parse_blast_output(input_blast: str, output_blast: str):
             result.sort()
             for prot in result:
                 blast_output.write(prot + '...' + '\n')
+
+parse_blast_output("example_blast_results.txt", "blast_output.txt")
                  
 
