@@ -84,3 +84,19 @@ class DNASequence(NucleicAcidSequence):
 
     def _create_new(self, new_seq: str) -> "DNASequence":
         return DNASequence(new_seq)
+
+
+class RNASequence(NucleicAcidSequence):
+    def __init__(self, seq: str):
+        self._seq = seq.upper()
+        self.is_valid_alphabet()
+
+    _complement_dict = {"A": "U", "U": "A", "C": "G", "G": "C"}
+    allowed_chars = {"A", "U", "C", "G"}
+
+    @property
+    def seq(self) -> str:
+        return self._seq
+
+    def _create_new(self, new_seq: str) -> "RNASequence":
+        return RNASequence(new_seq)
