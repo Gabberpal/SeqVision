@@ -1,5 +1,9 @@
+import os
+from typing import Union, Tuple
 from abc import ABC, abstractmethod
-from typing import Union
+
+from Bio import SeqIO
+from Bio.SeqUtils import gc_fraction
 
 
 class BiologicalSequence(ABC):
@@ -161,3 +165,42 @@ class AminoAcidSequence(BiologicalSequence):
 
     def _create_new(self, new_seq: str) -> "AminoAcidSequence":
         return AminoAcidSequence(new_seq)
+
+
+def filter_fastq(
+    input_fastq: str,
+    output_fastq: str,
+    gc_bounds: Union[Tuple[int, int], int, float] = (0, 100),
+    length_bounds: Union[Tuple[int, int], int] = (0, 2**32),
+    quality_threshold: Union[int, float] = 0,
+) -> None:
+    gc_min, gc_max = (
+        (0, gc_bounds) if isinstance(gc_bounds, (int, float)) else gc_bounds
+    )
+    len_min, len_max = (
+        (0, length_bounds) if isinstance(length_bounds, int) else length_bounds
+    )
+
+    input_path = os.path.join("data", input_fastq)
+    output_path = os.path.join("filtered", output_fastq)
+
+    with open(input_path) as in_handle, open(output_path, "w") as out_handle:
+        filtered_records = (
+            record
+            for record in SeqIO.parse(in_handle, "fastq")
+            if (
+                len_min <= len(record.seq) <= len_max
+                and (
+                    lambda s: (
+                        (gc_min <= (gc_fraction(s, ambiguous="ignore") * 100) <= gc_max)
+                        if s
+                        else False
+                    )
+                )(str(record.seq))
+                and (lambda q: sum(q) / len(q) >= quality_threshold if q else False)(
+                    record.letter_annotations.get("phred_quality", [])
+                )
+            )
+        )
+
+        SeqIO.write(filtered_records, out_handle, "fastq")
