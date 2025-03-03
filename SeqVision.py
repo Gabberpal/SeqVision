@@ -100,3 +100,64 @@ class RNASequence(NucleicAcidSequence):
 
     def _create_new(self, new_seq: str) -> "RNASequence":
         return RNASequence(new_seq)
+
+
+class AminoAcidSequence(BiologicalSequence):
+    def __init__(self, seq: str):
+        self._seq = seq
+        self.is_valid_alphabet()
+
+    _MOLECULAR_WEIGHTS = {
+        "A": 89.09,
+        "R": 174.20,
+        "N": 132.12,
+        "D": 133.10,
+        "C": 121.16,
+        "Q": 146.15,
+        "E": 147.13,
+        "G": 75.07,
+        "H": 155.16,
+        "I": 131.18,
+        "L": 131.18,
+        "K": 146.19,
+        "M": 149.21,
+        "F": 165.19,
+        "P": 115.13,
+        "S": 105.09,
+        "T": 119.12,
+        "W": 204.23,
+        "Y": 181.19,
+        "V": 117.15,
+    }
+    allowed_chars = {
+        "A",
+        "R",
+        "N",
+        "D",
+        "C",
+        "Q",
+        "E",
+        "G",
+        "H",
+        "I",
+        "L",
+        "K",
+        "M",
+        "F",
+        "P",
+        "S",
+        "T",
+        "W",
+        "Y",
+        "V",
+    }
+
+    @property
+    def seq(self) -> str:
+        return self._seq
+
+    def get_molecular_weight(self) -> int:
+        return sum(self._MOLECULAR_WEIGHTS[aa] for aa in self._seq)
+
+    def _create_new(self, new_seq: str) -> "AminoAcidSequence":
+        return AminoAcidSequence(new_seq)
