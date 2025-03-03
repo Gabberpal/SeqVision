@@ -43,3 +43,21 @@ class BiologicalSequence(ABC):
     @abstractmethod
     def _create_new(self, new_seq: str) -> "BiologicalSequence":
         pass
+
+
+class NucleicAcidSequence(BiologicalSequence, ABC):
+    @property
+    @abstractmethod
+    def _complement_dict(self) -> dict:
+        pass
+
+    def complement(self) -> "NucleicAcidSequence":
+        return self._create_new(
+            "".join(self._complement_dict[base] for base in self.seq)
+        )
+
+    def reverse(self) -> "NucleicAcidSequence":
+        return self._create_new(self.seq[::-1])
+
+    def reverse_complement(self) -> "NucleicAcidSequence":
+        return self.reverse().complement()
