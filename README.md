@@ -147,15 +147,3 @@ import bio_files_processor
 
 parse_blast_output("example_blast_results.txt", "blast_output.txt")
 ```
-
-## Data structure 
-
-├── data/ # Input files
-│ ├── example.fastq
-│ ├── multiline.fasta
-│ └── blast_results.txt
-├── filtered/ # Processed outputs
-├── SeqVision.py # Main functionality
-├── bio_files_processor.py # File format handlers
-├── requirements.txt
-└── README.md
