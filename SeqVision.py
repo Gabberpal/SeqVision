@@ -61,3 +61,26 @@ class NucleicAcidSequence(BiologicalSequence, ABC):
 
     def reverse_complement(self) -> "NucleicAcidSequence":
         return self.reverse().complement()
+
+
+class DNASequence(NucleicAcidSequence):
+    def __init__(self, seq: str):
+        self._seq = seq.upper()
+        self.is_valid_alphabet()
+
+    _complement_dict = {"A": "T", "T": "A", "C": "G", "G": "C"}
+    allowed_chars = {"A", "T", "C", "G"}
+
+    @property
+    def _transcribe_dict(self) -> dict:
+        return {"A": "U", "T": "A", "C": "G", "G": "C"}
+
+    @property
+    def seq(self) -> str:
+        return self._seq
+
+    def transcribe(self) -> "RNASequence":
+        return RNASequence(self._seq.translate(str.maketrans(self._transcribe_dict)))
+
+    def _create_new(self, new_seq: str) -> "DNASequence":
+        return DNASequence(new_seq)
