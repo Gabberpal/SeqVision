@@ -1,39 +1,60 @@
-# SeqVision 
+# SeqVision
 
-**SeqVision** - A comprehensive toolkit for processing and analyzing biological sequences (DNA, RNA, proteins) with Biopython integration and object-oriented design.
+**SeqVision** is a powerful and extensible toolkit for processing and analyzing biological sequences (DNA, RNA, proteins) using Biopython and an object-oriented approach.
 
-## Table of Contents 
+---
+
+## 📖 Table of Contents
+
 - [Features](#features)
 - [Installation](#installation)
 - [Requirements](#requirements)
 - [Usage](#usage)
+  - [Core Functionality](#core-functionality)
+  - [FASTQ Filtering](#fastq-filtering)
+  - [File Processing](#file-processing)
 - [Examples](#examples)
-- [Data Structure](#data-structure)
 
-## Features
+---
 
-- **FASTQ Filtering**: Advanced filtering by GC content, sequence length, and quality scores using Biopython
-- **Sequence Manipulation**: OOP-based operations for nucleic acids:
+## ✨ Features
+
+- **FASTQ Filtering**: Filter reads by GC content, sequence length, and average quality score
+- **Sequence Manipulation**:
   - Transcription (DNA → RNA)
-  - Complement/reverse complement
-  - Sequence validation and transformation
-- **Protein Analysis**: Molecular weight calculation for amino acid sequences
-- **File Processing**:
-  - Multiline FASTA to single-line conversion
-  - BLAST results parsing and sorting
-- **Extensible Core**: Base classes for custom sequence types development
+  - Complement / Reverse complement
+  - Validation, slicing, and transformations
+- **Protein Analysis**: Compute molecular weight of amino acid sequences
+- **File Processing Utilities**:
+  - Convert multiline FASTA to single-line format
+  - Parse and sort protein descriptions from BLAST output
+- **Extensibility**: Easily extend base classes to support new sequence types
 
-## Installation
+---
+
+## ⚙️ Installation
 
 1. Clone the repository:
 ```bash
 git clone https://github.com/Gabberpal/SeqVision && cd SeqVision
 ```
-2. Install requirements:
+
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-## Usage 
+
+---
+
+## 📦 Requirements
+
+- Python ≥ 3.8
+- Biopython
+- `pytest` or `unittest` for testing
+
+---
+
+## 🚀 Usage
 
 ### Core Functionality
 
@@ -45,105 +66,107 @@ from SeqVision import (
     filter_fastq
 )
 
-# Create validated DNA sequence
+# DNA manipulation
 dna = DNASequence("ATGCGTA")
-print(dna.reverse_complement())  # TACGCAT
+print(dna.reverse_complement())  # Output: TACGCAT
 
-# Transcribe to RNA
+# Transcription to RNA
 rna = dna.transcribe()
-print(rna)  # AUGCGUA
+print(rna)  # Output: AUGCGUA
 
-# Protein analysis
+# Protein molecular weight
 protein = AminoAcidSequence("MAKG")
-print(protein.get_molecular_weight())  # 459.56
+print(protein.get_molecular_weight())  # Output: 459.56
 ```
 
-### FASTQ sequence Filtering
+---
 
-To filter FASTQ sequences by GC content, length, and quality, use the `filter_fastq` function.
+### FASTQ Filtering
 
 ```python
 filter_fastq(
-    input_fastq="input.fastq",
-    output_fastq="filtered.fastq",
+    input_fastq="example_fastq.fastq",
+    output_fastq="filtered_output.fastq",
     gc_bounds=(35, 65),
     length_bounds=(75, 150),
     quality_threshold=25
 )
 ```
-**Parameters**:
 
-- input_fastq (str): Name of the input FASTQ file located in the "data" folder. 
-- output_fastq (str): Name of the output FASTQ file that will be located in the "filtered" folder.
-- gc_bounds (Union[Tuple[int, int], int, float], optional): GC content interval (in percent) for filtering.
-- length_bounds (Union[Tuple[int, int], int], optional): Sequence length interval for filtering.
-- quality_threshold (Union[int, float], optional): Average quality threshold for filtering.
+**Parameters:**
+
+- `input_fastq` *(str)*: Path to the input FASTQ file located in the `data/` folder
+- `output_fastq` *(str)*: Name of the output file written to the `filtered/` folder
+- `gc_bounds` *(tuple or number)*: GC content bounds in percent (e.g., `(30, 60)`)
+- `length_bounds` *(tuple or number)*: Sequence length bounds (e.g., `(100, 150)`)
+- `quality_threshold` *(int or float)*: Minimum average quality score
+
+---
 
 ### File Processing
 
 ```python
 import bio_files_processor
 
-# Convert FASTA format
+# Convert multiline FASTA to single-line format
 bio_files_processor.convert_multiline_fasta_to_oneline(
-    "input.fasta", 
-    "singleline.fasta"
+    "data/example_multiline_fasta.fasta",
+    "oneline_output.fasta"
 )
 
-# Process BLAST results
+# Parse BLAST output and sort descriptions
 bio_files_processor.parse_blast_output(
-    "blast_results.txt",
+    "data/example_blast_results.txt",
     "sorted_descriptions.txt"
 )
 ```
 
-## Examples
+---
 
-### DNA Operations
+## 🧪 Examples
+
+### DNA Manipulation
 
 ```python
 dna = DNASequence("ATGCTAGCTA")
-print(dna.complement())  # TACGATCGAT
-print(dna[2:5])  # GCT (returns new DNASequence instance)
+print(dna.complement())       # Output: TACGATCGAT
+print(dna[2:5])               # Output: GCT (returns new DNASequence instance)
 ```
 
 ### Protein Analysis
 
 ```python
 protein = AminoAcidSequence("MAKGHT")
-print(f"Molecular weight: {protein.get_molecular_weight():.2f} Da")
+print(f"MW: {protein.get_molecular_weight():.2f} Da")  # Output: MW: 656.75 Da
 ```
 
 ### Quality Filtering
 
 ```python
-# Filter with 40-60% GC content and Q30+ quality
 filter_fastq(
-    "raw_reads.fastq",
-    "high_quality.fastq",
+    input_fastq="data/raw_reads.fastq",
+    output_fastq="filtered/high_quality.fastq",
     gc_bounds=(40, 60),
     quality_threshold=30
 )
 ```
 
-### Convert multiline FASTA data to oneline
+### FASTA Conversion
 
-To convert multiline FASTA data to oneline use `convert_multiline_fasta_to_oneline()` function.
-Ecample:
-
-```Python
-import bio_files_processor 
-
-convert_multiline_fasta_to_oneline('example_miltiline_fasta.fasta', 'output_fasta.fasta')
+```python
+bio_files_processor.convert_multiline_fasta_to_oneline(
+    "data/input_multiline.fasta",
+    "filtered/oneline_output.fasta"
+)
 ```
 
-### Extract and sort protein description after BLAST
+### BLAST Description Parsing
 
-To extract and sort protein description after BLAST use `parse_blast_output()` function.
-Example:
-
-```Python
-import bio_files_processor 
-
-parse_blast_output("example_blast_results.txt", "blast_output.txt")
+```python
+bio_files_processor.parse_blast_output(
+    "data/blast_results.txt",
+    "filtered/sorted_blast_descriptions.txt"
+)
 ```
+
+---
