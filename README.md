@@ -1,36 +1,76 @@
 # SeqVision 
 
-**SeqVision** - is a tool for processing and analyzing nucleotide sequences such as DNA and RNA. It provides functions for filtering, transforming, and analyzing FASTQ, FASTA and BLAST sequences.
+**SeqVision** - A comprehensive toolkit for processing and analyzing biological sequences (DNA, RNA, proteins) with Biopython integration and object-oriented design.
 
 ## Table of Contents 
+- [Features](#features)
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [Examples](#examples)
+- [Data Structure](#data-structure)
 
-- [Functionality](#Functionality)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Examples](#Examples)
+## Features
 
-## Functionality 
+- **FASTQ Filtering**: Advanced filtering by GC content, sequence length, and quality scores using Biopython
+- **Sequence Manipulation**: OOP-based operations for nucleic acids:
+  - Transcription (DNA → RNA)
+  - Complement/reverse complement
+  - Sequence validation and transformation
+- **Protein Analysis**: Molecular weight calculation for amino acid sequences
+- **File Processing**:
+  - Multiline FASTA to single-line conversion
+  - BLAST results parsing and sorting
+- **Extensible Core**: Base classes for custom sequence types development
 
-- **Sequence Filtering**: Filter sequences by GC content, length, and quality.
-- **Sequence Transformation**: Transcription, complementarity, reverse complementarity, reverse, and palindrome selection.
-- **Sequence Analysis**: Calculate statistics on sequences such as GC content and length.
-- **Convert multiline fasta data to oneline**: convert fasta reads to oneline.
-- **Extract and sort protein description after BLAST**: Parses a BLAST output file to extract and sort protein descriptions.
+## Installation
 
-## Installation 
-
-Clone the repository:
-
-   ```bash
-   git clone https://github.com/Gabberpal/SeqVision && cd SeqVision
-   ```
-
+1. Clone the repository:
+```bash
+git clone https://github.com/Gabberpal/SeqVision && cd SeqVision
+```
+2. Install requirements:
+```bash
+pip install -r requirements.txt
+```
 ## Usage 
+
+### Core Functionality
+
+```python
+from SeqVision import (
+    DNASequence,
+    RNASequence,
+    AminoAcidSequence,
+    filter_fastq
+)
+
+# Create validated DNA sequence
+dna = DNASequence("ATGCGTA")
+print(dna.reverse_complement())  # TACGCAT
+
+# Transcribe to RNA
+rna = dna.transcribe()
+print(rna)  # AUGCGUA
+
+# Protein analysis
+protein = AminoAcidSequence("MAKG")
+print(protein.get_molecular_weight())  # 459.56
+```
 
 ### FASTQ sequence Filtering
 
 To filter FASTQ sequences by GC content, length, and quality, use the `filter_fastq` function.
 
+```python
+filter_fastq(
+    input_fastq="input.fastq",
+    output_fastq="filtered.fastq",
+    gc_bounds=(35, 65),
+    length_bounds=(75, 150),
+    quality_threshold=25
+)
+```
 **Parameters**:
 
 - input_fastq (str): Name of the input FASTQ file located in the "data" folder. 
@@ -39,28 +79,52 @@ To filter FASTQ sequences by GC content, length, and quality, use the `filter_fa
 - length_bounds (Union[Tuple[int, int], int], optional): Sequence length interval for filtering.
 - quality_threshold (Union[int, float], optional): Average quality threshold for filtering.
 
-Example:
+### File Processing
 
 ```python
-from SeqVision import filter_fastq
+import bio_files_processor
 
-filtered_fastq = filter_fastq("example_fastq.fastq", "output_fastq.fastq", gc_bounds=(20, 80), length_bounds=(50, 75), quality_threshold=20)
+# Convert FASTA format
+bio_files_processor.convert_multiline_fasta_to_oneline(
+    "input.fasta", 
+    "singleline.fasta"
+)
+
+# Process BLAST results
+bio_files_processor.parse_blast_output(
+    "blast_results.txt",
+    "sorted_descriptions.txt"
+)
 ```
-### Sequence Transformation 
+
+## Examples
+
+### DNA Operations
 
 ```python
-sequences = ["ACGT", "UGCA"]
-transformed_sequences = run_dna_rna_tools(sequences, "function_name")
-print(transformed_sequences)
+dna = DNASequence("ATGCTAGCTA")
+print(dna.complement())  # TACGATCGAT
+print(dna[2:5])  # GCT (returns new DNASequence instance)
 ```
 
-#### Functions for Sequence Transformation 
+### Protein Analysis
 
-- `transcribe`: Returns transcribed sequences.
-- `complement`: Returns complementary sequences.
-- `reverse`: Returns reverse sequences.
-- `reverse_complement`: Returns reverse-complementary sequences.
-- `which_palindrome`: Returns only palindromic sequences.
+```python
+protein = AminoAcidSequence("MAKGHT")
+print(f"Molecular weight: {protein.get_molecular_weight():.2f} Da")
+```
+
+### Quality Filtering
+
+```python
+# Filter with 40-60% GC content and Q30+ quality
+filter_fastq(
+    "raw_reads.fastq",
+    "high_quality.fastq",
+    gc_bounds=(40, 60),
+    quality_threshold=30
+)
+```
 
 ### Convert multiline FASTA data to oneline
 
@@ -83,7 +147,3 @@ import bio_files_processor
 
 parse_blast_output("example_blast_results.txt", "blast_output.txt")
 ```
-
-### data folder 
-
-In data folder you can find some exaple datas. You can try it on functions from this repo and understand how this functions works! 
