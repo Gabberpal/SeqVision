@@ -279,7 +279,7 @@ class AminoAcidSequence(BiologicalSequence):
         Returns:
             int: Sum of molecular weights of amino acids in daltons
         """
-        return sum(self._MOLECULAR_WEIGHTS[aa] for aa in self._seq)
+        return sum([self._MOLECULAR_WEIGHTS[aa] for aa in self._seq])
 
     def _create_new(self, new_seq: str) -> "AminoAcidSequence":
         return AminoAcidSequence(new_seq)
