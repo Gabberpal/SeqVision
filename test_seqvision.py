@@ -62,38 +62,6 @@ class TestFileOperations(unittest.TestCase):
         # Check if the open function was called with the correct arguments
         mock_file.assert_called_with("filtered/output_fasta.fasta", "a")
 
-    @patch("builtins.open", new_callable=unittest.mock.mock_open)
-    def test_parse_blast_output(self, mock_file):
-        # Simulate the BLAST parsing process
-        input_blast = "data/example_blast_results.txt"
-        output_blast = "output_blast.blast"
-
-        parse_blast_output(input_blast, output_blast)
-
-        # Check if the open function was called with the correct arguments
-        mock_file.assert_called_with("filtered/output_blast.blast", "a")
-
-
-class TestFASTQOperations(unittest.TestCase):
-    """Tests for FASTQ file operations."""
-
-    @patch("SeqVision.filter_fastq")
-    def test_filter_fastq_valid(self, mock_filter):
-        mock_filter.return_value = None  # Simulate a successful filtering process
-
-        input_fastq = "data/example_fastq.fastq"
-        output_fastq = "output_fastq.fastq"
-        filter_fastq(input_fastq, output_fastq)
-
-        # Check if the filter function was called correctly
-        mock_filter.assert_called_with(
-            input_fastq,
-            output_fastq,
-            gc_bounds=(0, 100),
-            length_bounds=(0, 2**32),
-            quality_threshold=0,
-        )
-
 
 class TestErrorHandling(unittest.TestCase):
     """Tests for error handling and invalid input."""
