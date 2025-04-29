@@ -279,7 +279,7 @@ class AminoAcidSequence(BiologicalSequence):
         Returns:
             int: Sum of molecular weights of amino acids in daltons
         """
-        return sum(self._MOLECULAR_WEIGHTS[aa] for aa in self._seq)
+        return sum([self._MOLECULAR_WEIGHTS[aa] for aa in self._seq])
 
     def _create_new(self, new_seq: str) -> "AminoAcidSequence":
         return AminoAcidSequence(new_seq)
@@ -313,7 +313,7 @@ def filter_fastq(
         (0, length_bounds) if isinstance(length_bounds, int) else length_bounds
     )
 
-    input_path = os.path.join("data", input_fastq)
+    input_path = os.path.join(input_fastq)
     output_path = os.path.join("filtered", output_fastq)
 
     with open(input_path) as in_handle, open(output_path, "w") as out_handle:
